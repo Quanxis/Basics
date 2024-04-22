@@ -1,3 +1,6 @@
+https://nextcloud.dhz.hr/s/boSpaFHFgoydCMs
+
+
 Pulling images:
 	command: `podman pull <image_name>` It pulls from docker hub or some other repository like redhat repos
 Pulling repos from GitHub:
