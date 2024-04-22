@@ -1,0 +1,111 @@
+Pulling images:
+	command: `podman pull <image_name>` It pulls from docker hub or some other repository like redhat repos
+Pulling repos from GitHub:
+	First create a directoy command "`mkdir file_name`", initialize the directory with "`git init`", after that "`git pull link name`", then 
+
+mkdir pikachu, cd pikachu,
+Building images:
+	 We can create Dockerfile that is a recipe for docker images, example of docker file Lab03 myweb:0.0.1, This is an example of HTTPD image with custum index.html
+	 `FROM registry.access.redhat.com/ubi8/ubi:latest
+	 `RUN yum -y update && yum clean all`
+	 `RUN yum -y install httpd && yum clean all`
+	 `EXPOSE 80`
+	 `CMD ["usr/sbin/httpd", "-D", "FOREGROUND"]`
+- How to build this image:
+	-  podman build -t myweb:0.0.1 .
+- How to run this container:
+	- `podman run -d --name mywebcontainer -p 8080 myweb:0.0.1 (there is no container ports because it already written in Dockerfile)`
+- How to push to Docker hub:
+	- login into docker hub:
+		- `podman login -> useraname -> pass`
+	- `podman tag myweb:0.0.1 name_of_my_repo:0.0.1`
+	- `podman push name_of_my_repo:0.0.1`
+- General commands
+	- Interactive mode:
+		- To run container in interactive mode we have to specify the shell (bash):
+			- `podman -it -name mycontainer -p 8080:80 bash`
+			- inside the container we can make changes to running live container and then we can save those changes in a new image
+				- Command for that is:
+					- `podman commit name_of_changed_conatiner new_image_name`
+	- Starting stopped container:
+		- `podman start container_name`
+			- interactive mode: `podman exec -it container_name /bin/bash`
+	- Export and save:
+		- Diff between is save is for images and export is for containers
+		- Save command example:
+			- `podman save -o myweb_0.0.1.tar myweb:0.0.1`
+		- Export command example:
+			- `podman export myweb -o myweb_container.tar`
+	- Podman diff command shows us diff between images
+- Podman quadlets
+	- **command to generate:  `podman generate systemd --name web --restart-policy=always -t 1 --files`**
+
+**Lab04**
+**Creating MySQL container:**
+First create Podman network: `podman network create <network_name>`
+`mkdir -p /home/student/mysql`
+**Command without bind:**
+	`podman run -d \`
+	  `--name mysql \`
+	  `--network labnet \`
+	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \`
+	  `-e MYSQL_DATABASE='wordpress' \`
+	  `-e MYSQL_USER='student' \`
+	  `-e MYSQL_PASSWORD='DB15secure!' \`
+	  `mysql:latest`
+**Command with binded database:**
+	`podman run -d \`
+	  `--name mysql \`
+	  `--network labnet \`
+	  `-v /home/student/mysql:/var/lib/mysql:Z \`
+	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \`
+	  `-e MYSQL_DATABASE='wordpress' \`
+	  `-e MYSQL_USER='student' \`
+	  `-e MYSQL_PASSWORD='DB15secure!' \`
+	  `mysql:latest`
+**with volumes:**
+	`podman run -d \`
+	  `--name mysql \`
+	  `--network labnet \`
+	  `--volume wordpress_db:/var/lib/mysql:Z \`
+	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \`
+	  `-e MYSQL_DATABASE='wordpress' \`
+	  `-e MYSQL_USER='student' \`
+	  `-e MYSQL_PASSWORD='DB15secure!' \`
+	  `mysql:latest`
+
+**Wordpress:**
+	`podman run -d \`
+	  `--name wordpress \`
+	  `--network labnet`
+	  `-p 8080:80 \`
+	  `-e WORDPRESS_DB_HOST=mysql \`
+	  `-e WORDPRESS_DB_USER=student \`
+	  `-e WORDPRESS_DB_PASSWORD='DB15secure!' \`
+	  `-e WORDPRESS_DB_NAME=wordpress \`
+	  `wordpress:latest`
+docker-compse.yml
+	---
+	`volumes:`
+	  `db_data:`
+	`services:`
+	  `wordpress:`
+	    `image: docker.io/library/wordpress:latest`
+	    `ports:`
+	      `- 8080:80`
+	    `environment:`
+	      `- WORDPRESS_DB_HOST=mysql`
+	      `- WORDPRESS_DB_USER=student`
+	      `- WORDPRESS_DB_PASSWORD=DB15secure!`
+	      `- WORDPRESS_DB_NAME=wordpress`
+	  `db:`
+	    `image: docker.io/library/mariadb:10.6.4-focal`
+	    `command: '--default-authentication-plugin=mysql_native_password'`
+	    `volumes:`
+	      `- db_data:/var/lib/mysql:Z`
+	    `environment:`
+	      `- MYSQL_RANDOM_ROOT_PASSWORD='1'`
+	      `- MYSQL_DATABASE=wordpress`
+	      `- MYSQL_USER=student`
+	      `- MYSQL_PASSWORD=DB15secure!`
+      
