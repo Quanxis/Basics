@@ -8,11 +8,11 @@ Pulling repos from GitHub:
 
 Building images:
 	 We can create Dockerfile that is a recipe for docker images, example of docker file Lab03 myweb:0.0.1, This is an example of HTTPD image with custum index.html
-	 `FROM registry.access.redhat.com/ubi8/ubi:latest
-	 `RUN yum -y update && yum clean all`
-	 `RUN yum -y install httpd && yum clean all`
-	 `EXPOSE 80`
-	 `CMD ["usr/sbin/httpd", "-D", "FOREGROUND"]`
+	 FROM registry.access.redhat.com/ubi8/ubi:latest
+	 RUN yum -y update && yum clean all
+	 RUN yum -y install httpd && yum clean all
+	 EXPOSE 80
+	 CMD ["usr/sbin/httpd", "-D", "FOREGROUND"]
 - How to build this image:
 	-  podman build -t myweb:0.0.1 .
 - How to run this container:
