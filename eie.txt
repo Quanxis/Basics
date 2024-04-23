@@ -10,7 +10,7 @@ Sudo podman run -d - - name  -p 8080:80 nginx:latest
 ~~name = custom container name 
 engine name= nginx or docker 
 
-Sudo podman images -a = shows the images 
+Sudo podman images -a = shows the downnloaded images 
 Pwd - show the current file path 
 Ls - list 
 Ls -l = list 
