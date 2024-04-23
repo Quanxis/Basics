@@ -161,3 +161,7 @@ docker-compse.yml
 	      - MYSQL_USER=student
 	      - MYSQL_PASSWORD=DB15secure!
       
+sudo sudo podman run -d --name mysql --network labnet -v /home/student/mysql:/var/lib/mysql -e MYSQL_RANDOM_ROOT_PASSWORD='yes' -e MYSQL_DATABASE='wordpress' -e MYSQL_USER='student' -e MYSQL_PASSWORD='DB15secure!' mysql:latest
+
+/home/student/mysql: - will change
+ad variables with e
