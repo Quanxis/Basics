@@ -109,8 +109,8 @@ First create Podman network: `podman network create <network_name>`
 	`podman run -d \
 	  `--name mysql \
 	  `--network labnet \
-	  `-v /home/student/mysql:/var/lib/mysql:Z \
-	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \
+	  `-v /home/student/mysql:/var/lib/mysql \
+	  `-e MYSQL_RANDOM_ROOT_PASSWORD='yes' \
 	  `-e MYSQL_DATABASE='wordpress' \
 	  `-e MYSQL_USER='student' \
 	  `-e MYSQL_PASSWORD='DB15secure!' \
@@ -119,8 +119,8 @@ First create Podman network: `podman network create <network_name>`
 	`podman run -d \
 	  `--name mysql \
 	  `--network labnet \
-	  `--volume wordpress_db:/var/lib/mysql:Z \
-	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \
+	  `--volume wordpress_db:/var/lib/mysql \
+	  `-e MYSQL_RANDOM_ROOT_PASSWORD='yes' \
 	  `-e MYSQL_DATABASE='wordpress' \
 	  `-e MYSQL_USER='student' \
 	  `-e MYSQL_PASSWORD='DB15secure!' \
