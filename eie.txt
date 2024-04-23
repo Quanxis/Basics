@@ -106,15 +106,15 @@ First create Podman network: `podman network create <network_name>`
 	-e MYSQL_PASSWORD='DB15secure!' \
 	mysql:latest
 **Command with binded database:**
-	`podman run -d \
-	  `--name mysql \
-	  `--network labnet \
-	  `-v /home/student/mysql:/var/lib/mysql \
-	  `-e MYSQL_RANDOM_ROOT_PASSWORD='yes' \
-	  `-e MYSQL_DATABASE='wordpress' \
-	  `-e MYSQL_USER='student' \
-	  `-e MYSQL_PASSWORD='DB15secure!' \
-	  `mysql:latest
+	podman run -d \
+	  --name mysql \
+	  --network labnet \
+	  -v /home/student/mysql:/var/lib/mysql \
+	  -e MYSQL_RANDOM_ROOT_PASSWORD='yes' \
+	  -e MYSQL_DATABASE='wordpress' \
+	  -e MYSQL_USER='student' \
+	  -e MYSQL_PASSWORD='DB15secure!' \
+	  mysql:latest
 **with volumes:**
 	`podman run -d \
 	  `--name mysql \
@@ -127,37 +127,37 @@ First create Podman network: `podman network create <network_name>`
 	  `mysql:latest
 
 **Wordpress:**
-	`podman run -d \
-	  `--name wordpress \
-	  `--network labnet
-	  `-p 8080:80 \
-	  `-e WORDPRESS_DB_HOST=mysql \
-	  `-e WORDPRESS_DB_USER=student \
-	  `-e WORDPRESS_DB_PASSWORD='DB15secure!' \
-	  `-e WORDPRESS_DB_NAME=wordpress \
-	  `wordpress:latest`
+	podman run -d \
+	  --name wordpress \
+	  --network labnet \
+	  -p 8080:80 \
+	  -e WORDPRESS_DB_HOST=mysql \
+	  -e WORDPRESS_DB_USER=student \
+	  -e WORDPRESS_DB_PASSWORD='DB15secure!' \
+	  -e WORDPRESS_DB_NAME=wordpress \
+	  wordpress:latest`
 docker-compse.yml
 	---
-	`volumes:`
-	  `db_data:`
-	`services:`
-	  `wordpress:`
-	    `image: docker.io/library/wordpress:latest`
-	    `ports:`
-	      `- 8080:80`
-	    `environment:`
-	      `- WORDPRESS_DB_HOST=mysql`
-	      `- WORDPRESS_DB_USER=student`
-	      `- WORDPRESS_DB_PASSWORD=DB15secure!`
-	      `- WORDPRESS_DB_NAME=wordpress`
-	  `db:`
-	    `image: docker.io/library/mariadb:10.6.4-focal`
-	    `command: '--default-authentication-plugin=mysql_native_password'`
-	    `volumes:`
-	      `- db_data:/var/lib/mysql:Z`
-	    `environment:`
-	      `- MYSQL_RANDOM_ROOT_PASSWORD='1'`
-	      `- MYSQL_DATABASE=wordpress`
-	      `- MYSQL_USER=student`
-	      `- MYSQL_PASSWORD=DB15secure!`
+	volumes:
+	  db_data:
+	services:
+	  wordpress:
+	    image: docker.io/library/wordpress:latest
+	    ports:
+	      - 8080:80
+	    environment:
+	      - WORDPRESS_DB_HOST=mysql
+	      - WORDPRESS_DB_USER=student
+	      - WORDPRESS_DB_PASSWORD=DB15secure!
+	      - WORDPRESS_DB_NAME=wordpress
+	  db:
+	    image: docker.io/library/mariadb:10.6.4-focal
+	    command: '--default-authentication-plugin=mysql_native_password
+	    volumes:
+	      - db_data:/var/lib/mysql
+	    environment:
+	      - MYSQL_RANDOM_ROOT_PASSWORD='yes'
+	      - MYSQL_DATABASE=wordpress
+	      - MYSQL_USER=student
+	      - MYSQL_PASSWORD=DB15secure!
       
