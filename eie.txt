@@ -47,44 +47,44 @@ Building images:
 First create Podman network: `podman network create <network_name>`
 `mkdir -p /home/student/mysql`
 **Command without bind:**
-	`podman run -d \`
-	  `--name mysql \`
-	  `--network labnet \`
-	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \`
-	  `-e MYSQL_DATABASE='wordpress' \`
-	  `-e MYSQL_USER='student' \`
-	  `-e MYSQL_PASSWORD='DB15secure!' \`
-	  `mysql:latest`
+	podman run -d \
+	--name mysql \
+	--network labnet \
+	-e MYSQL_RANDOM_ROOT_PASSWORD='1' \
+	-e MYSQL_DATABASE='wordpress' \
+	-e MYSQL_USER='student' \
+	-e MYSQL_PASSWORD='DB15secure!' \
+	mysql:latest
 **Command with binded database:**
-	`podman run -d \`
-	  `--name mysql \`
-	  `--network labnet \`
-	  `-v /home/student/mysql:/var/lib/mysql:Z \`
-	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \`
-	  `-e MYSQL_DATABASE='wordpress' \`
-	  `-e MYSQL_USER='student' \`
-	  `-e MYSQL_PASSWORD='DB15secure!' \`
-	  `mysql:latest`
+	`podman run -d \
+	  `--name mysql \
+	  `--network labnet \
+	  `-v /home/student/mysql:/var/lib/mysql:Z \
+	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \
+	  `-e MYSQL_DATABASE='wordpress' \
+	  `-e MYSQL_USER='student' \
+	  `-e MYSQL_PASSWORD='DB15secure!' \
+	  `mysql:latest
 **with volumes:**
-	`podman run -d \`
-	  `--name mysql \`
-	  `--network labnet \`
-	  `--volume wordpress_db:/var/lib/mysql:Z \`
-	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \`
-	  `-e MYSQL_DATABASE='wordpress' \`
-	  `-e MYSQL_USER='student' \`
-	  `-e MYSQL_PASSWORD='DB15secure!' \`
-	  `mysql:latest`
+	`podman run -d \
+	  `--name mysql \
+	  `--network labnet \
+	  `--volume wordpress_db:/var/lib/mysql:Z \
+	  `-e MYSQL_RANDOM_ROOT_PASSWORD='1' \
+	  `-e MYSQL_DATABASE='wordpress' \
+	  `-e MYSQL_USER='student' \
+	  `-e MYSQL_PASSWORD='DB15secure!' \
+	  `mysql:latest
 
 **Wordpress:**
-	`podman run -d \`
-	  `--name wordpress \`
-	  `--network labnet`
-	  `-p 8080:80 \`
-	  `-e WORDPRESS_DB_HOST=mysql \`
-	  `-e WORDPRESS_DB_USER=student \`
-	  `-e WORDPRESS_DB_PASSWORD='DB15secure!' \`
-	  `-e WORDPRESS_DB_NAME=wordpress \`
+	`podman run -d \
+	  `--name wordpress \
+	  `--network labnet
+	  `-p 8080:80 \
+	  `-e WORDPRESS_DB_HOST=mysql \
+	  `-e WORDPRESS_DB_USER=student \
+	  `-e WORDPRESS_DB_PASSWORD='DB15secure!' \
+	  `-e WORDPRESS_DB_NAME=wordpress \
 	  `wordpress:latest`
 docker-compse.yml
 	---
