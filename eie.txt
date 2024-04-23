@@ -27,6 +27,17 @@ Sudo podman rm - to remove the containers
 
 Htpp://localhost:8080
 
+podman commit [OPTIONS] CONTAINER IMAGE_NAME -
+For example, if you have modified a container named web8080 and want to save it as a new image named custom-nginx:
+podman commit web8080 custom-nginx
+
+To change the contents of the default web page served by the nginx server in the web8080 container without stopping the container, you can follow these steps:
+
+Access the container's shell: Use podman exec - podman exec -it web8080 /bin/bash
+Edit the web page: vi /usr/share/nginx/html/index.html
+Exit the container: After saving the changes, you can exit the container: exit
+The nginx server will serve the updated content without needing to restart the container, assuming it is set up to read the file dynamically. If nginx is configured to cache its content, you might need to reload or restart nginx within the container without affecting the container's operation: podman exec web8080 nginx -s reload
+
 Lab 03
 
 Mkdir any name
