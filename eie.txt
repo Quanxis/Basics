@@ -1,5 +1,44 @@
 https://nextcloud.dhz.hr/s/boSpaFHFgoydCMs
 
+Lab 01
+
+Podman ps -a = lists all the containers 
+Sudo podman run -d - - name  -p 8080:80 nginx:latest
+
+-d = detatch
+-p = ports 
+~~name = custom container name 
+engine name= nginx or docker 
+
+Sudo podman images -a = shows the images 
+Pwd - show the current file path 
+Ls - list 
+Ls -l = list 
+
+Podman save - for images
+Podman export - for containers 
+Sudo podman save imageID > any name.tar
+Sudo podman export ID > any name.tar
+
+Sudo podman rmi - to delete the images 
+
+Sudo podman stop - to stop the container 
+Sudo podman rm - to remove the containers 
+
+Htpp://localhost:8080
+
+Lab 03
+
+Mkdir any name
+Cd that name
+Nano Dockerfile
+Sudo podman build -t myweb:0.0.1  . 
+Sudo podman login 
+Sudo podman login docker.io 
+Sudo podman tag myweb:0.0.1 pikachux/lab03:0.0.1
+Sudo podman push pikachux/lab03:0.0.1
+
+Myweb = any given name
 
 Pulling images:
 	command: `podman pull <image_name>` It pulls from docker hub or some other repository like redhat repos
