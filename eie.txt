@@ -165,3 +165,18 @@ sudo sudo podman run -d --name mysql --network labnet -v /home/student/mysql:/va
 
 /home/student/mysql: - will change
 ad variables with e
+
+Lab04 
+
+Podman network ls – gives network name available 
+
+podman network inspect <network name > - inspects network
+
+Podman network create <name> - creates your own network with name 
+To go in to the home –  cd . .
+To create a folder – mkdir <name of the folder>
+To go into the folder – cd <name of foldr>
+For tasks:
+
+sudo sudo podman run -d --name mysql --network labnet -v /home/student/mysql:/var/lib/mysql -e MYSQL_RANDOM_ROOT_PASSWORD='yes' -e MYSQL_DATABASE='wordpress' -e MYSQL_USER='student' -e MYSQL_PASSWORD='DB15secure!' mysql:latest
+
