@@ -178,5 +178,15 @@ To create a folder – mkdir <name of the folder>
 To go into the folder – cd <name of foldr>
 For tasks:
 
-sudo sudo podman run -d --name mysql --network labnet -v /home/student/mysql:/var/lib/mysql -e MYSQL_RANDOM_ROOT_PASSWORD='yes' -e MYSQL_DATABASE='wordpress' -e MYSQL_USER='student' -e MYSQL_PASSWORD='DB15secure!' mysql:latest
+sudo podman run -d --name mysql --network labnet -v /home/student/mysql:/var/lib/mysql -e MYSQL_RANDOM_ROOT_PASSWORD='yes' -e MYSQL_DATABASE='wordpress' -e MYSQL_USER='student' -e MYSQL_PASSWORD='DB15secure!' mysql:latest
+
+For Wordpress with connected to database that i already created.
+sudo podman run -d --name wordpress --network labnet -p 8080:80 \
+    -e WORDPRESS_DB_HOST=db \
+    -e WORDPRESS_DB_USER=student \
+    -e WORDPRESS_DB_PASSWORD=DB15secure! \
+    -e WORDPRESS_DB_NAME=labnet \
+    wordpress:latest
+
+
 
