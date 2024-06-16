@@ -1,0 +1,77 @@
+Here's a list of the Podman commands mentioned in our conversation, each with a brief description of its purpose:
+
+1. **`podman search`**:
+   - **Command**: `podman search docker.io/nginx`
+   - **Description**: Searches for container images on Docker Hub or other registries. In this example, it's used to find images related to "nginx" on Docker Hub.
+
+2. **`podman ps`**:
+   - **Command**: `podman ps`
+   - **Description**: Lists all currently running containers. Adding `-a` shows all containers, including stopped ones.
+
+3. **`podman pull`**:
+   - **Command**: `podman pull docker.io/nginx:latest`
+   - **Description**: Pulls an image from a container registry. Here, it pulls the latest Nginx image from Docker Hub.
+
+4. **`podman run`**:
+   - **Commands**:
+     - `podman run -d -p 80:80 docker.io/nginx:latest`
+     - `podman run -d --name web8080 -p 8080:80 docker.io/nginx:latest`
+   - **Description**: Starts a new container from a specified image. `-d` runs the container in detached mode (in the background), `-p` maps a port from the host to the container, and `--name` assigns a name to the container.
+
+5. **`podman stop`**:
+   - **Command**: `podman stop [CONTAINER ID or NAME]`
+   - **Description**: Stops a running container. The container can be specified by its ID or name.
+
+6. **`podman image save`**:
+   - **Command**: `podman image save -o nginx_latest.tar docker.io/nginx:latest`
+   - **Description**: Saves an image to a tar archive file, allowing it to be transferred and loaded on another system.
+
+7. **`podman export`**:
+   - **Command**: `podman export web8080 -o web8080.tar`
+   - **Description**: Exports a container's filesystem to a tar file, useful for backups or analysis.
+
+8. **`podman commit`**:
+   - **Command**: `podman commit mynginxcontainer mynewnginximage`
+   - **Description**: Creates a new image from a modified running or stopped container. This is useful for saving changes made within a container.
+  
+**To create a new container from an Image**
+https://docs.docker.com/get-started/02_our_app/
+1. Clone the repository where the image is
+2. Add a Dockerfile (touch Dockerfile)
+3. Open the Dockerfile in a text editor and then a
+
+# syntax=docker/dockerfile:1
+
+FROM node:18-alpine.
+WORKDIR /app.
+COPY . .
+RUN yarn install --production.
+CMD ["node", "src/index.js"].
+EXPOSE 3000.
+
+
+
+Certainly! Here's a list of all the Podman commands I've mentioned in this conversation, along with a brief description for each:
+
+1. **`podman build -t getting-started:0.0.1 .`**
+   - **Description**: Builds a Docker-compatible container image from a Dockerfile in the current directory, tagging it as `getting-started:0.0.1`.
+
+2. **`podman image inspect my-image:0.0.1`**
+   - **Description**: Displays detailed information about the container image `my-image:0.0.1`, including its configuration, environment variables, and layers.
+
+3. **`podman diff --from-image image1 --to-image image2`**
+   - **Description**: Compares the file systems of two images, `image1` and `image2`, listing differences such as added, deleted, or modified files.
+
+4. **`podman build -t myweb:0.0.1 .`**
+   - **Description**: Builds a container image using the Dockerfile (or Containerfile) in the current directory and tags it as `myweb:0.0.1`.
+
+5. **`podman login [your-private-repository]`**
+   - **Description**: Authenticates with a private container registry, allowing you to push and pull images from this repository.
+
+6. **`podman tag myweb:0.0.1 myrepo.com/myweb:0.0.1`**
+   - **Description**: Tags an existing local image `myweb:0.0.1` with a new tag that includes the repository address, preparing it for pushing to that repository.
+
+7. **`podman push myrepo.com/myweb:0.0.1`**
+   - **Description**: Pushes the tagged image `myweb:0.0.1` to a specified private repository (`myrepo.com`).
+
+Each of these commands is part of managing and interacting with container images using Podman, from building and inspecting images to tagging and pushing them to a repository.
