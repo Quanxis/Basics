@@ -9,7 +9,10 @@ Look for the dns_enabled setting in the output. The value will be either true or
 3.Create a custom network with DNS enabled.
 podman network create --dns-enabled labnet
 
-4.Create a MySQL database container.
+4.Create a MySQL database container.It should randomize the root password, create a database called wordpress and a user called student with password DB15secure!.
+It should be started in the background and connected to labnet network. Name the container mysql.
+
+
 podman run -d \
   --name mysql \
   --network labnet \
@@ -17,9 +20,13 @@ podman run -d \
   -e MYSQL_DATABASE=wordpress \
   -e MYSQL_USER=student \
   -e MYSQL_PASSWORD=DB15secure! \
-  mysql
+  MySQL
 
-5. Create a WordPress container.
+sudo podman run -d   --name mysql   --network labnet   -e MYSQL_ROOT_PASSWORD=$(openssl rand -base64 12)   -e MYSQL_DATABASE=wordpress   -e MYSQL_USER=student   -e MYSQL_PASSWORD=DB15secure!   mysql
+
+5. Create a WordPress container.t should be started in the background, connected to the labnet network and it should publish port 80 from the container to port 8080 on the host.
+Configure environment variables to connect to database container created in the previous step. Wen referencing the database host use mysql(name of the previous container) as the host.
+
 podman run -d \
   --name wordpress \
   --network labnet \
@@ -28,9 +35,14 @@ podman run -d \
   -e WORDPRESS_DB_PASSWORD=DB15secure! \
   -e WORDPRESS_DB_NAME=wordpress \
   -p 8080:80 \
-  wordpress
+  Wordpress
 
-6. Would it work with the default network?
+sudo podman run -d  podman run -d   --name wordpress   --network labnet   -e WORDPRESS_DB_HOST=mysql   -e WORDPRESS_DB_USER=student   -e WORDPRESS_DB_PASSWORD=DB15secure!   -e WORDPRESS_DB_NAME=wordpress   -p 8080:80   docker.io/library/wordpress:latest
+---
+sudo podman login docker.io
+----
+
+6. If you repeated previous two steps by using default network, Would it work with the default network?
 Yes, it would work with the default network because containers in the same network can communicate with each other using their names as hostnames.
 However, if specific network configurations or DNS settings are required, a custom network like labnet would be beneficial.
 
