@@ -63,9 +63,16 @@ podman run -d \
   -e MYSQL_DATABASE=wordpress \
   -e MYSQL_USER=student \
   -e MYSQL_PASSWORD=DB15secure! \
-  mysql
+  MySQL
+
+sudo podman run -d   --name mysql   --network labnet   -v /home/george/mysql:/var/lib/mysql   -e MYSQL_ROOT_PASSWORD=$(openssl rand -base64 12)   -e MYSQL_DATABASE=wordpress   -e MYSQL_USER=student   -e MYSQL_PASSWORD=DB15secure!   mysql
+
 
 Examine the host directory /home/student/mysql to see the MySQL data files.
+First, open a terminal on your VM and navigate to the directory where you want to create the docker-compose.yml file.
+cd /home/george   # Navigate to your preferred directory
+touch docker-compose.yml   # Create the file
+nano docker-compose.yml    # Open the file in a text editor
 
 9.Recreate the MySQL container using a volume instead of a bind mount.
 
@@ -79,7 +86,14 @@ podman run -d \
   -e MYSQL_DATABASE=wordpress \
   -e MYSQL_USER=student \
   -e MYSQL_PASSWORD=DB15secure! \
-  mysql
+  MySQL
+
+-Remove the old MySQL container:
+sudo podman rm -f MySQL
+
+-Create a volume for MySQL:
+sudo podman volume create mysql_data
+
 
 10. Install podman-compose package.
 sudo dnf install podman-compose
@@ -118,4 +132,13 @@ volumes:
 12. Deploy the services using the compose file.
 podman-compose up -d
 
+Save and close the file:
+
+If you're using nano, you can save the file by pressing Ctrl+O, then press Enter, and then exit by pressing Ctrl+X.
+
 This will start the WordPress and MySQL containers, with WordPress accessible at http://<your-vm-ip>:8080.
+
+Create the compose file:
+cd /home/george   # Navigate to your preferred directory
+touch docker-compose.yml   # Create the file
+nano docker-compose.yml    # Open the file in a text editor
