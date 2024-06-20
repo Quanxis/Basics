@@ -1,0 +1,106 @@
+1. List all podman networks.
+podman network ls
+You should see the default network called podman with the bridge driver.
+
+2. Inspect the network configuration of the default podman network.
+podman network inspect podman
+Look for the dns_enabled setting in the output. The value will be either true or false.
+
+3.Create a custom network with DNS enabled.
+podman network create --dns-enabled labnet
+
+4.Create a MySQL database container.
+podman run -d \
+  --name mysql \
+  --network labnet \
+  -e MYSQL_ROOT_PASSWORD=$(openssl rand -base64 12) \
+  -e MYSQL_DATABASE=wordpress \
+  -e MYSQL_USER=student \
+  -e MYSQL_PASSWORD=DB15secure! \
+  mysql
+
+5. Create a WordPress container.
+podman run -d \
+  --name wordpress \
+  --network labnet \
+  -e WORDPRESS_DB_HOST=mysql \
+  -e WORDPRESS_DB_USER=student \
+  -e WORDPRESS_DB_PASSWORD=DB15secure! \
+  -e WORDPRESS_DB_NAME=wordpress \
+  -p 8080:80 \
+  wordpress
+
+6. Would it work with the default network?
+Yes, it would work with the default network because containers in the same network can communicate with each other using their names as hostnames.
+However, if specific network configurations or DNS settings are required, a custom network like labnet would be beneficial.
+
+7. Create a default web page in the WordPress application.
+Access the WordPress installation by opening a web browser and navigating to http://<your-vm-ip>:8080. Follow the on-screen instructions to create the default web page.
+
+8.Delete the old MySQL container and create a new one with bind mount.
+
+podman rm -f mysql
+podman run -d \
+  --name mysql \
+  --network labnet \
+  -v /home/student/mysql:/var/lib/mysql \
+  -e MYSQL_ROOT_PASSWORD=$(openssl rand -base64 12) \
+  -e MYSQL_DATABASE=wordpress \
+  -e MYSQL_USER=student \
+  -e MYSQL_PASSWORD=DB15secure! \
+  mysql
+
+Examine the host directory /home/student/mysql to see the MySQL data files.
+
+9.Recreate the MySQL container using a volume instead of a bind mount.
+
+podman rm -f mysql
+podman volume create mysql_data
+podman run -d \
+  --name mysql \
+  --network labnet \
+  -v mysql_data:/var/lib/mysql \
+  -e MYSQL_ROOT_PASSWORD=$(openssl rand -base64 12) \
+  -e MYSQL_DATABASE=wordpress \
+  -e MYSQL_USER=student \
+  -e MYSQL_PASSWORD=DB15secure! \
+  mysql
+
+10. Install podman-compose package.
+sudo dnf install podman-compose
+
+11. Create a compose file for WordPress and MySQL.
+Create a file named docker-compose.yml with the following content:
+
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: student
+      MYSQL_PASSWORD: DB15secure!
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  wordpress:
+    image: wordpress
+    container_name: wordpress
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: student
+      WORDPRESS_DB_PASSWORD: DB15secure!
+      WORDPRESS_DB_NAME: wordpress
+
+volumes:
+  mysql_data:
+
+12. Deploy the services using the compose file.
+podman-compose up -d
+
+This will start the WordPress and MySQL containers, with WordPress accessible at http://<your-vm-ip>:8080.
