@@ -38,7 +38,8 @@ podman run -d \
   Wordpress
 
 sudo podman run -d  podman run -d   --name wordpress   --network labnet   -e WORDPRESS_DB_HOST=mysql   -e WORDPRESS_DB_USER=student   -e WORDPRESS_DB_PASSWORD=DB15secure!   -e WORDPRESS_DB_NAME=wordpress   -p 8080:80   docker.io/library/wordpress:latest
-sudo podman run -d podman run -d --name wordpress --network labnet -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_USER=student -e WORDPRESS_DB_PASSWORD=DB15secure! -e WORDPRESS_DB_NAME=wordpress -p 8080:80 docker.io/library/wordpress:latest
+sudo podman run -d --name wordpress --network labnet -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_USER=student -e WORDPRESS_DB_PASSWORD=DB15secure! -e WORDPRESS_DB_NAME=wordpress -p 8080:80 docker.io/library/wordpress:latest
+
 
 ---
 sudo podman login docker.io
